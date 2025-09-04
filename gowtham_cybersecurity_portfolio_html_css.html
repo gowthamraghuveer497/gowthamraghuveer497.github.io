@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gowtham — Cybersecurity Portfolio</title>
+  <style>
+    :root{
+      --bg:#2b0d10;
+      --panel:#3a1216;
+      --accent:#ff3b6b;
+      --accent-2:#00e0b0;
+      --muted:#b99ea3;
+      --glass:rgba(255,255,255,0.03);
+      --glow:0 0 18px rgba(255,59,107,0.16);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient( circle at 10% 10%, rgba(255,59,107,0.04) 0%, transparent 6%, rgba(0,224,176,0.02) 10%),
+                  linear-gradient(180deg,var(--bg),#1e0a0b 120%);
+      color:#f2e9ea;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:32px;
+      gap:24px;
+    }
+    .card{
+      width:100%;
+      max-width:1100px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      padding:26px;
+      box-shadow: var(--glow);
+      border:1px solid rgba(255,255,255,0.03);
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:22px;
+      backdrop-filter: blur(6px);
+    }
+    .left{
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:10px;
+      padding:20px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .avatar{
+      width:100%;
+      height:230px;
+      border-radius:8px;
+      background-image: linear-gradient(135deg, rgba(255,59,107,0.07), rgba(0,224,176,0.03));
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--mono);
+      font-size:26px;
+      letter-spacing:1px;
+      color:var(--muted);
+      border:1px dashed rgba(255,255,255,0.03);
+      margin-bottom:16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .avatar:after{
+      content:"G";
+      position:absolute;right:12px;bottom:8px;
+      font-size:120px;color:rgba(255,59,107,0.06);
+      font-family:var(--mono);
+      transform:rotate(-12deg)
+    }
+    .name{font-size:20px;font-weight:700;margin:6px 0 2px}
+    .role{font-size:13px;color:var(--muted);margin-bottom:12px}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;margin:6px 6px 6px 0;
+      background:linear-gradient(90deg, rgba(255,59,107,0.06), rgba(0,224,176,0.03));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .section-title{font-family:var(--mono);font-size:12px;color:var(--muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:1.6px}
+    .skill-list{display:flex;flex-wrap:wrap;gap:8px}
+    .skill{background:var(--glass);padding:8px 10px;border-radius:8px;font-size:13px;color:#fff;border:1px solid rgba(255,255,255,0.02)}
+    .contact a{display:block;text-decoration:none;color:var(--muted);font-size:14px;margin:6px 0}
+    .right{padding:6px 6px 6px 0}
+    header.hero{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .hero-left{max-width:74%}
+    .eyebrow{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:1px}
+    h1{margin:6px 0 6px;font-size:28px}
+    p.lead{color:var(--muted);margin:0 0 14px}
+    .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .proj{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);
+      font-family:var(--mono);font-size:13px;position:relative;overflow:hidden}
+    .proj .title{font-weight:700;margin-bottom:6px}
+    .proj .desc{color:var(--muted);font-size:13px;margin-bottom:10px}
+    .pill{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);font-size:12px;border:1px solid rgba(255,255,255,0.02)}
+    .terminal{margin-top:14px;padding:12px;border-radius:8px;background:#120609;border:1px solid rgba(255,255,255,0.02);font-family:var(--mono);font-size:13px;color:var(--muted)}
+    .terminal .line{display:block}
+    .prompt{color:var(--accent);}
+    .out{color:var(--accent-2)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;font-weight:600;text-decoration:none;color:#fff;background:linear-gradient(90deg,var(--accent),#ff6a85);
+      border:1px solid rgba(255,255,255,0.04);box-shadow:0 6px 22px rgba(0,0,0,0.6);transition:transform .15s ease,box-shadow .15s ease}
+    .btn.secondary{background:transparent;color:var(--accent);border:1px solid rgba(255,59,107,0.14)}
+    .btn:active{transform:translateY(2px)}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    .proj:hover{box-shadow:0 6px 36px rgba(255,59,107,0.06);transform:translateY(-4px);transition:all .22s ease}
+    @media (max-width:900px){
+      .card{grid-template-columns:1fr;}
+      .projects{grid-template-columns:1fr}
+      .hero-left{max-width:100%}
+    }
+  </style>
+</head>
+<body>
+  <main class="card" role="main">
+    <aside class="left" aria-label="Profile">
+      <div class="avatar">AVATAR</div>
+      <div class="name">Gowtham</div>
+      <div class="role">B.Tech Computer Science — Amity University, Gurugram<br><span style="color:var(--muted);font-size:13px">Specialising in Cybersecurity & Data Science</span></div>
+      <div class="section-title">Profile</div>
+      <div style="color:var(--muted);font-size:14px;line-height:1.4">
+        Passionate cybersecurity enthusiast aiming for roles in penetration testing and firewall testing. Currently building practical skills in networking, system security and ML-enabled IoT projects.
+      </div>
+      <div class="section-title">Skills</div>
+      <div class="skill-list">
+        <span class="skill">Penetration Testing</span>
+        <span class="skill">Network Fundamentals</span>
+        <span class="skill">Python Scripting</span>
+        <span class="skill">Linux</span>
+        <span class="skill">IoT Security</span>
+        <span class="skill">Machine Learning</span>
+        <span class="skill">Wireshark</span>
+        <span class="skill">Nmap &amp; Metasploit</span>
+      </div>
+      <div class="section-title">Contact</div>
+      <div class="contact">
+        <a href="mailto:gowtham@example.com" target="_blank" aria-label="email">✉️ gowthamraghyveer@gmail.com</a>
+        <a href="https://linkedin.com/in/gowtham" target="_blank" aria-label="linkedin">🔗 linkedin.com/in/gowthamraghyveer</a>
+        <a href="https://github.com/gowtham" target="_blank" aria-label="github">🐙 github.com/gowthamraghuveer497</a>
+      </div>
+      <div style="margin-top:12px">
+        <a class="btn" href="https://example.com/resume.pdf" target="_blank">Download Resume</a>
+      </div>
+    </aside>
+    <section class="right">
+      <header class="hero">
+        <div class="hero-left">
+          <div class="eyebrow">Cybersecurity Portfolio</div>
+          <h1>Hi — I'm Gowtham. I build secure systems, break insecure ones, and learn from both.</h1>
+          <p class="lead">B.Tech Computer Science student at Amity University, Gurugram. Interested in penetration testing, firewall testing and securing IoT devices with AI/ML insights.</p>
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+            <a class="btn" href="#projects">View Projects</a>
+            <a class="btn secondary" href="#contact">Get in touch</a>
+          </div>
+        </div>
+        <div style="text-align:right;min-width:140px">
+          <div class="pill">Head Girl — School</div>
+          <div style="height:6px"></div>
+          <div class="pill">CompTIA A+ (in progress)</div>
+        </div>
+      </header>
+      <div class="section-title">Projects</div>
+      <div id="projects" class="projects">
+        <article class="proj">
+          <div class="title">IoT Smart Toothbrush (AI/ML-enabled)</div>
+          <div class="desc">Designed an IoT-enabled toothbrush prototype that collects brushing metrics and uses lightweight ML to provide real-time feedback. Emphasis on secure data transmission and device hardening.</div>
+          <div style="margin-top:8px"><span class="pill">Python</span> <span class="pill">MQTT</span> <span class="pill">Edge ML</span></div>
+          <a href="C:\Users\gowth\AppData\Local\Microsoft\Windows\INetCache\IE\CMB0O7SP\DentiGenius_amity_template_updated-2[1].pptx" target="_blank" class="btn secondary" style="margin-top:8px;display:inline-block">View Project</a>
+        </article>
+        <article class="proj">
+          <div class="title">Inter-department Hackathon — 3rd Place</div>
+          <div class="desc">Built a proof-of-concept security tool for network anomaly detection. Participated as lead developer and wrote detection scripts and demo dashboard.</div>
+          <div style="margin-top:8px"><span class="pill">Wireshark</span> <span class="pill">Nmap</span></div>
+          <a href="C:\Users\gowth\AppData\Local\Microsoft\Windows\INetCache\IE\CMB0O7SP\DentiGenius_amity_template_updated-2[1].pptx" target="_blank" class="btn secondary" style="margin-top:8px;display:inline-block">View Project</a>
+        </article>
+      </div>
+      <div class="section-title">Live Shell (demo)</div>
+      <div class="terminal" aria-hidden="false">
+        <span class="line"><span class="prompt">$</span> git clone https://github.com/gowtham/portfolio</span>
+        <span class="line"><span class="prompt">$</span> cd smart-toothbrush && python3 run_demo.py</span>
+        <span class="line out">[INFO] Device secure channel established — telemetry streaming (encrypted)</span>
+      </div>
+      <div class="section-title">Education & Certifications</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px;background:var(--panel);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02)">
+          <strong>Amity University, Gurugram</strong>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px">B.Tech — Computer Science (specialising in Cybersecurity & Data Science)</div>
+        </div>
+        <div style="flex:1;min-width:220px;background:var(--panel);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02)">
+          <strong>Certifications / In progress</strong>
+          <div style="color:var(--muted);font-size:13px;margin-top:6px">CompTIA A+ (in progress)</div>
+        </div>
+      </div>
+      <footer id="contact">
+        <div class="section-title">Contact & Next Steps</div>
+        <div style="color:var(--muted);font-size:14px;line-height:1.5">Interested in collaborations, internships or project feedback? Reach out at <strong>gowtham@example.com</strong> or send a message on GitHub/LinkedIn. I respond quickly and love working on security tooling and IoT hardening projects.</div>
+        <div style="margin-top:12px"><a class="btn" href="https://linkedin.com/in/gowtham" target="_blank">Contact Me</a></div>
+      </footer>
+    </section>
+  </main>
+</body>
+</html>

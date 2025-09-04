@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gowtham Raghu Veer — Portfolio</title>
+  <meta name="description" content="Portfolio of Gowtham Raghu Veer — B.Tech (Comp Sci) specializing in Cybersecurity & Data Science.">
+  <!-- Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
+  <style>
+    /* ========== COLORS & BASE ========== */
+    :root{
+      --bg:#2b0d10; /* deep maroon */
+      --panel:#351116;
+      --muted:#b99ea3;
+      --accent:#00e0b0; /* neon teal */
+      --accent-2:#ff3b6b; /* magenta */
+      --glass:rgba(255,255,255,0.03);
+      --mono:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+      --sans:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family:var(--sans);
+      background: radial-gradient( circle at 10% 10%, rgba(255,59,107,0.02) 0%, transparent 6%),
+                  linear-gradient(180deg,var(--bg),#14060a 140%);
+      color:#f6eef0;
+      -webkit-font-smoothing:antialiased;
+      overflow:hidden;
+    }
+
+    /* ========== LAYOUT ========== */
+    .wrap{
+      position:relative;
+      width:100%;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      gap:28px;
+    }
+
+    /* content card */
+    .panel{
+      position:relative;
+      width:min(1100px,96%);
+      height:78vh;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:14px;
+      display:grid;
+      grid-template-columns:420px 1fr;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 18px 80px rgba(0,0,0,0.6);
+    }
+
+    /* 3D canvas column */
+    .canvas-col{position:relative;background:transparent;padding:22px;display:flex;flex-direction:column;gap:12px}
+    #three-canvas{flex:1;border-radius:10px;overflow:hidden;background:linear-gradient(135deg, rgba(255,59,107,0.02), rgba(0,224,176,0.02));}
+    .screen-overlay{position:absolute;left:22px;top:22px;width:420px;padding:14px;pointer-events:none}
+
+    .logo{font-family:var(--mono);font-weight:700;letter-spacing:1px;color:var(--muted);font-size:12px}
+    .title{font-size:20px;font-weight:800;margin-top:6px}
+    .subtitle{color:var(--muted);font-size:13px;margin-top:6px;max-width:360px}
+
+    /* right content */
+    .content{padding:28px 32px;display:flex;flex-direction:column;gap:18px}
+    .nav{display:flex;gap:10px;align-items:center}
+    .tab{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700;font-size:13px;color:var(--muted)}
+    .tab.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#081018;border:1px solid rgba(255,255,255,0.06)}
+
+    h1{font-size:28px;margin:6px 0}
+    p.lead{color:var(--muted);margin:0;line-height:1.5}
+
+    .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .card-small{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);min-height:86px}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* project area */
+    .project{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));padding:14px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#081018;font-weight:700;text-decoration:none;border:0}
+
+    /* footer */
+    .footer{margin-top:auto;color:var(--muted);font-size:13px}
+
+    /* subtle glass blur behind small labels */
+    .label{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,0.02);font-family:var(--mono);font-size:12px}
+
+    /* responsiveness */
+    @media (max-width:980px){
+      .panel{height:92vh;grid-template-columns:1fr;}
+      .canvas-col{order:2}
+      .screen-overlay{display:none}
+      .cards{grid-template-columns:1fr}
+    }
+
+    /* Accessibility focus */
+    .tab:focus{outline:3px solid rgba(0,224,176,0.16)}
+
+    /* Micro interactions */
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="application">
+    <div class="panel" aria-label="Gowtham Raghu Veer portfolio">
+
+      <!-- LEFT: 3D Canvas / Intro -->
+      <div class="canvas-col">
+        <div id="three-canvas" aria-hidden="false"></div>
+        <div class="screen-overlay" aria-hidden="true">
+          <div class="logo">GOWTHAM RAGHU VEER</div>
+          <div class="title">B.Tech — Computer Science</div>
+          <div class="subtitle">Specialising in Cybersecurity & Data Science — Amity University, Gurugram</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <a class="btn" href="#projects" id="cta-projects">View Projects</a>
+          <div class="hint">Use mouse / touch to rotate the 3D computer. Click tabs to explore.</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Content & Tabs -->
+      <div class="content">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div class="logo">PORTFOLIO</div>
+            <h1>Hi — I'm Gowtham. I design security, break it, and fix the gaps.</h1>
+            <p class="lead">A motivated B.Tech student focusing on firewall development and penetration testing. I build secure IoT solutions and apply ML to real-time device telemetry.</p>
+          </div>
+          <div style="text-align:right">
+            <div class="label">CompTIA | Google AI</div>
+            <div style="height:8px"></div>
+            <div class="muted">Amity University, Gurugram</div>
+          </div>
+        </div>
+
+        <nav class="nav" role="tablist" aria-label="Sections">
+          <button class="tab active" role="tab" aria-selected="true" data-tab="about">About</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="certs">Certifications</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="interests">Interests</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="projects">Projects</button>
+        </nav>
+
+        <section id="tab-content" aria-live="polite">
+          <!-- About -->
+          <div class="tab-panel" data-panel="about">
+            <div class="cards" style="margin-bottom:12px">
+              <div class="card-small">
+                <strong>Education</strong>
+                <div class="muted">B.Tech — Computer Science (Cybersecurity & Data Science) — Amity University, Gurugram</div>
+              </div>
+              <div class="card-small">
+                <strong>Certifications (ongoing)</strong>
+                <div class="muted">Google AI Essentials · CompTIA Essential</div>
+              </div>
+            </div>
+            <div class="project">
+              <strong>Previous Project — Smart Toothbrush</strong>
+              <p class="muted">Designed an IoT smart toothbrush prototype providing real-time oral health feedback using lightweight ML on the edge. Focused on secure telemetry over encrypted channels and device hardening.</p>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <span class="label">Python</span>
+                <span class="label">MQTT</span>
+                <span class="label">Edge-ML</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certifications -->
+          <div class="tab-panel" data-panel="certs" style="display:none">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+              <div class="card-small" style="flex:1;min-width:200px">
+                <strong>Google AI Essentials</strong>
+                <div class="muted">Fundamentals of AI — in progress</div>
+              </div>
+              <div class="card-small" style="flex:1;min-width:200px">
+                <strong>CompTIA Essential</strong>
+                <div class="muted">Core IT & security skills — in progress</div>
+              </div>
+            </div>
+            <p class="muted">Working through hands-on labs and assessments. Add certificates & badges as they complete to strengthen credibility.</p>
+          </div>
+
+          <!-- Interests -->
+          <div class="tab-panel" data-panel="interests" style="display:none">
+            <div style="display:flex;gap:12px;flex-wrap:wrap">
+              <div class="card-small" style="flex:1;min-width:220px">
+                <strong>Firewall Development</strong>
+                <div class="muted">Designing packet filters, rule engines, and secure policy enforcement for network devices.</div>
+              </div>
+              <div class="card-small" style="flex:1;min-width:220px">
+                <strong>Penetration Testing</strong>
+                <div class="muted">Offensive security — vulnerability discovery, exploit development and hardening recommendations.</div>
+              </div>
+            </div>
+            <div style="margin-top:10px">
+              <p class="muted">I enjoy building tooling, writing detection scripts, and applying ML to detect network anomalies.</p>
+            </div>
+          </div>
+
+          <!-- Projects -->
+          <div class="tab-panel" data-panel="projects" style="display:none">
+            <div class="cards" style="margin-bottom:12px">
+              <div class="project">
+                <strong>IoT Smart Toothbrush</strong>
+                <p class="muted">Edge ML model + secure MQTT pipeline for real-time oral-health feedback. Implemented encryption, OTA update stub, and power-efficient telemetry.</p>
+                <div style="margin-top:8px"><a class="btn" href="https://github.com/gowtham/smart-toothbrush" target="_blank">View on GitHub</a></div>
+              </div>
+              <div class="project">
+                <strong>Network Anomaly Detector (Hackathon)</strong>
+                <p class="muted">Prototype tool for detecting anomaly flows using packet-level heuristics. Placed 3rd in an inter-department hackathon.</p>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <div class="footer">Contact: <a href="mailto:gowtham@example.com" style="color:var(--accent);text-decoration:none">gowtham@example.com</a> · <a href="https://linkedin.com/in/gowtham" style="color:var(--accent);text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://github.com/gowtham" style="color:var(--accent);text-decoration:none" target="_blank">GitHub</a></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    /***** Tabs logic *****/
+    (function(){
+      const tabs = document.querySelectorAll('.tab');
+      const panels = document.querySelectorAll('.tab-panel');
+      tabs.forEach(tab=>{
+        tab.addEventListener('click', ()=>{
+          tabs.forEach(t=>t.classList.remove('active'));
+          tabs.forEach(t=>t.setAttribute('aria-selected','false'));
+          tab.classList.add('active');
+          tab.setAttribute('aria-selected','true');
+          const target = tab.dataset.tab;
+          panels.forEach(p=>{ p.style.display = (p.dataset.panel===target)?'block':'none'; });
+          // nice focus
+          tab.focus();
+        });
+      });
+
+      // CTA button scroll to projects
+      const cta = document.getElementById('cta-projects');
+      cta && cta.addEventListener('click', (e)=>{
+        e.preventDefault();
+        document.querySelector('[data-panel="projects"]').style.display='block';
+        document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+        const projectsTab = document.querySelector('.tab[data-tab="projects"]');
+        projectsTab.classList.add('active');
+      });
+    })();
+
+    /***** Three.js — lightweight 3D 'computer' scene *****/
+    (function(){
+      const container = document.getElementById('three-canvas');
+      if(!container) return;
+
+      // sizes
+      const sizes = { width: container.clientWidth, height: container.clientHeight };
+
+      // renderer
+      const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+      renderer.setSize( sizes.width, sizes.height );
+      renderer.setPixelRatio( Math.min(window.devicePixelRatio, 2) );
+      container.appendChild(renderer.domElement);
+
+      // scene
+      const scene = new THREE.Scene();
+
+      // camera
+      const camera = new THREE.PerspectiveCamera(35, sizes.width / sizes.height, 0.1, 100);
+      camera.position.set(0, 1.6, 3.4);
+      scene.add(camera);
+
+      // lights
+      const key = new THREE.DirectionalLight(0xffffff, 0.9);
+      key.position.set(4,6,4);
+      scene.add(key);
+      const rim = new THREE.PointLight(0xff3b6b, 0.4, 10);
+      rim.position.set(-3,2,2);
+      scene.add(rim);
+
+      // floor / subtle gradient plane
+      const floorGeo = new THREE.PlaneGeometry(10,6);
+      const floorMat = new THREE.MeshStandardMaterial({color:0x0a0608, roughness:0.8, metalness:0.0});
+      const floor = new THREE.Mesh(floorGeo, floorMat);
+      floor.rotation.x = -Math.PI/2; floor.position.y = -0.75; scene.add(floor);
+
+      // create a stylized 'laptop' using boxes and planes
+      const group = new THREE.Group();
+
+      // base
+      const baseGeo = new THREE.BoxGeometry(1.6, 0.06, 1.1);
+      const baseMat = new THREE.MeshStandardMaterial({color:0x13060a, metalness:0.4, roughness:0.6});
+      const base = new THREE.Mesh(baseGeo, baseMat);
+      base.position.y = -0.35; group.add(base);
+
+      // screen
+      const screenGeo = new THREE.BoxGeometry(1.6, 0.9, 0.04);
+      const screenMat = new THREE.MeshStandardMaterial({color:0x081018, metalness:0.2, roughness:0.3});
+      const screen = new THREE.Mesh(screenGeo, screenMat);
+      screen.position.set(0,0.27,-0.48);
+      screen.rotation.x = -0.08; group.add(screen);
+
+      // screen content (emissive plane)
+      const contentGeo = new THREE.PlaneGeometry(1.46,0.78);
+      const contentMat = new THREE.MeshBasicMaterial({color:0x00141a, transparent:true, opacity:0.98});
+      const content = new THREE.Mesh(contentGeo, contentMat);
+      content.position.set(0,0.27,-0.46); content.rotation.x = -0.08; group.add(content);
+
+      // neon stripes on screen to simulate HUD
+      const hudMat = new THREE.MeshBasicMaterial({color:0x00e0b0});
+      const stripeGeo = new THREE.PlaneGeometry(0.9, 0.04);
+      const stripe = new THREE.Mesh(stripeGeo, hudMat); stripe.position.set(0,0.5,-0.45); stripe.rotation.x = -0.08; group.add(stripe);
+      const stripe2 = stripe.clone(); stripe2.scale.set(0.7,1,1); stripe2.position.y = 0.38; group.add(stripe2);
+
+      // add to scene
+      scene.add(group);
+
+      // subtle ambient
+      scene.add(new THREE.AmbientLight(0xffffff, 0.18));
+
+      // interaction variables
+      let isPointerDown = false; let lastX=0, lastY=0; let rotX=0, rotY=0;
+
+      // handle resize
+      function onResize(){
+        sizes.width = container.clientWidth; sizes.height = container.clientHeight;
+        renderer.setSize(sizes.width, sizes.height);
+        camera.aspect = sizes.width / sizes.height; camera.updateProjectionMatrix();
+      }
+      window.addEventListener('resize', onResize);
+
+      // pointer interactions
+      function onPointerDown(e){ isPointerDown=true; lastX = e.clientX || (e.touches && e.touches[0].clientX) || 0; lastY = e.clientY || (e.touches && e.touches[0].clientY) || 0; }
+      function onPointerUp(){ isPointerDown=false; }
+      function onPointerMove(e){ if(!isPointerDown) return; const cx = e.clientX || (e.touches && e.touches[0].clientX); const cy = e.clientY || (e.touches && e.touches[0].clientY); const dx = (cx - lastX) * 0.005; const dy = (cy - lastY) * 0.005; rotY += dx; rotX += dy; lastX = cx; lastY = cy; }
+      container.addEventListener('pointerdown', onPointerDown); container.addEventListener('pointerup', onPointerUp); container.addEventListener('pointercancel', onPointerUp); container.addEventListener('pointermove', onPointerMove);
+
+      // subtle floating animation
+      let clock = new THREE.Clock();
+      function animate(){
+        const t = clock.getElapsedTime();
+        group.rotation.y = rotY * 0.8 + Math.sin(t*0.6)*0.08;
+        group.rotation.x = rotX * 0.5 + Math.sin(t*0.3)*0.04;
+        group.position.y = Math.sin(t*0.8)*0.03 - 0.02;
+
+        // animate hud stripe color pulse
+        const pulse = (Math.sin(t*2) + 1)/2;
+        stripe.material.color.setRGB(0.0 + pulse*0.0, 0.88 + pulse*0.12, 0.69 + pulse*0.06);
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // Cleanup on unload
+      window.addEventListener('beforeunload', ()=>{ renderer.dispose(); });
+
+    })();
+  </script>
+</body>
+</html>
